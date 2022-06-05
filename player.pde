@@ -1,37 +1,161 @@
-class Player { //<>//
+PImage cha_Aleft,cha_Aleft2,cha_Aright,cha_Aright2,cha_Aback,cha_Abackblack; //<>//
+PImage cha_Aworkup,cha_Aworkup2,cha_Aworkdown,cha_Aworkblack_up,cha_Aworkblack_down;
+PImage cha_Bleft,cha_Bleft2,cha_Bright,cha_Bright2,cha_Bback,cha_Bbackblack;
+PImage cha_Bworkup,cha_Bworkup2,cha_Bworkdown,cha_Bworkblack_up,cha_Bworkblack_down;
+PImage cha_Cleft,cha_Cleft2,cha_Cright,cha_Cright2,cha_Cback,cha_Cbackblack;
+PImage cha_Cworkup,cha_Cworkup2,cha_Cworkdown,cha_Cworkblack_up,cha_Cworkblack_down;
+PImage face_A1,face_A2,face_A3,face_B1,face_B2,face_B3,face_C1,face_C2,face_C3;
+
+void loadPlayerImg(){
+  face_A1 = loadImage("img/face/face_A1.png");
+  face_A2 = loadImage("img/face/face_A2.png");
+  face_A3 = loadImage("img/face/face_A3.png");
+  face_B1 = loadImage("img/face/face_B1.png");
+  face_B2 = loadImage("img/face/face_B2.png");
+  face_B3 = loadImage("img/face/face_B3.png");
+  face_C1 = loadImage("img/face/face_C1.png");
+  face_C2 = loadImage("img/face/face_C2.png");
+  face_C3 = loadImage("img/face/face_C3.png");
+  cha_Aleft = loadImage("img/characters/A/cha_Aleft.png");
+  cha_Aleft2 = loadImage("img/characters/A/cha_Aleft2.png");
+  cha_Aright = loadImage("img/characters/A/cha_Aright.png");
+  cha_Aright2 = loadImage("img/characters/A/cha_Aright2.png");
+  cha_Aback = loadImage("img/characters/A/cha_Aback.png");
+  cha_Abackblack = loadImage("img/characters/A/cha_Abackblack.png");
+  cha_Aworkup = loadImage("img/characters/A/cha_Aworkup.png");
+  cha_Aworkup2 = loadImage("img/characters/A/cha_Aworkup2.png");
+  cha_Aworkdown = loadImage("img/characters/A/cha_Aworkdown.png");
+  cha_Aworkblack_up = loadImage("img/characters/A/cha_Aworkblack_up.png");
+  cha_Aworkblack_down = loadImage("img/characters/A/cha_Aworkblack_down.png");
+  cha_Bleft = loadImage("img/characters/B/cha_Bleft.png");
+  cha_Bleft2 = loadImage("img/characters/B/cha_Bleft2.png");
+  cha_Bright = loadImage("img/characters/B/cha_Bright.png");
+  cha_Bright2 = loadImage("img/characters/B/cha_Bright2.png");
+  cha_Bback = loadImage("img/characters/B/cha_Bback.png");
+  cha_Bbackblack = loadImage("img/characters/B/cha_Bbackblack.png");
+  cha_Bworkup = loadImage("img/characters/B/cha_Bworkup.png");
+  cha_Bworkup2 = loadImage("img/characters/B/cha_Bworkup2.png");
+  cha_Bworkdown = loadImage("img/characters/B/cha_Bworkdown.png");
+  cha_Bworkblack_up = loadImage("img/characters/B/cha_Bworkblack_up.png");
+  cha_Bworkblack_down = loadImage("img/characters/B/cha_Bworkblack_down.png");
+  cha_Cleft = loadImage("img/characters/C/cha_Cleft.png");
+  cha_Cleft2 = loadImage("img/characters/C/cha_Cleft2.png");
+  cha_Cright = loadImage("img/characters/C/cha_Cright.png");
+  cha_Cright2 = loadImage("img/characters/C/cha_Cright2.png");
+  cha_Cback = loadImage("img/characters/C/cha_Cback.png");
+  cha_Cbackblack = loadImage("img/characters/C/cha_Cbackblack.png");
+  cha_Cworkup = loadImage("img/characters/C/cha_Cworkup.png");
+  cha_Cworkup2 = loadImage("img/characters/C/cha_Cworkup2.png");
+  cha_Cworkdown = loadImage("img/characters/C/cha_Cworkdown.png");
+  cha_Cworkblack_up = loadImage("img/characters/C/cha_Cworkblack_up.png");
+  cha_Cworkblack_down = loadImage("img/characters/C/cha_Cworkblack_down.png");
+}
+
+final int PLAYERX_INIT = 3111;
+final int PLAYERY_INIT = 195;
+class Player {
   float x; //玩家在遊戲中的絕對座標
+  float y; //玩家的Y位置
   float xOnScreen; // 玩家顯示在遊戲畫面上的座標
   String direction; //玩家的方向狀態（LEFT朝左、RIGHT朝右、BACK背對）
   String where; // 玩家目前所在場地（HALL 走廊、WORKING 手作室、CUTTING 切削室、GRINDING 研磨室、ADMIN 助教室）
+  String name; // 玩家人名
+  int skin; // 玩家外觀 (0:同學A 1:同學B 2:同學C)
+  boolean moving = false;
+  int movingTimer = 0;
+  boolean moveable = true; //現在玩家能否移動
+  float speed;
+  PImage currentImg;
   
-  boolean moveable = true;
+  PImage left1,left2,right1,right2,back,backBlack;
+  PImage face1,face2,face3;
+  ArrayList<Item> bag = new ArrayList<Item>(1);
+  
 
-  Player() {
-    x = 500;
+  Player(int skin,String name) {
+    speed = 12;
+    x = PLAYERX_INIT;
+    y = PLAYERY_INIT;
     xOnScreen = width/2;
     direction = "LEFT";
     where = "HALL";
+    this.name = name;
+    this.skin = skin;
+    switch(skin){
+      case 0:
+        left1 = cha_Aleft;
+        left2 = cha_Aleft2;
+        right1 = cha_Aright;
+        right2 = cha_Aright2;
+        back = cha_Aback;
+        backBlack = cha_Abackblack;
+        face1 = face_A1;
+        face2 = face_A2;
+        face3 = face_A3;
+        break;
+      case 1:
+        left1 = cha_Bleft;
+        left2 = cha_Bleft2;
+        right1 = cha_Bright;
+        right2 = cha_Bright2;
+        back = cha_Bback;
+        backBlack = cha_Bbackblack;
+        face1 = face_B1;
+        face2 = face_B2;
+        face3 = face_B3;
+        break;
+      case 2:
+        left1 = cha_Cleft;
+        left2 = cha_Cleft2;
+        right1 = cha_Cright;
+        right2 = cha_Cright2;
+        back = cha_Cback;
+        backBlack = cha_Cbackblack;
+        face1 = face_C1;
+        face2 = face_C2;
+        face3 = face_C3;
+        break;
+    }
   }
   
-  Player(float x,String where) {
-    this.x = x;
-    this.xOnScreen = width/2;
-    this.direction = "LEFT";
-    this.where = where;
-  }
-
+  // ---- 載入玩家資料用的建構式 ----
+  //Player(float x,String where) {
+  //  this.x = x;
+  //  this.xOnScreen = width/2;
+  //  this.direction = "LEFT";
+  //  this.currentImg = chaALeft1;
+  //  this.where = where;
+  //}
+  
   void display() {
     rectMode(CENTER);
-    rect(x, 350, 50, 50);
+    if(movingTimer%20<=10){
+      if(direction == "LEFT"){
+        currentImg = left1;
+      }else if(direction == "RIGHT"){
+        currentImg = right1;
+      }
+    }else{
+      if(direction == "LEFT"){
+        currentImg = left2;
+      }else if(direction == "RIGHT"){
+        currentImg = right2;
+      }
+    }
+    if(direction == "BACK"){
+      currentImg = back;
+    }
+    image(currentImg,x-63, y);
   }
-
+  
   void move() {
     final float MOVING_AREA = 50; // 角色在畫面上的移動範圍寬度
     final float SCENE_PADDING = 100; // 角色在場景移動的左右邊界寬度
     if(moveable){
       if (keyPressed) {
         if (key == 'a' || key == 'A') {
-          x -= 14;// 移動角色
+          moving =true;
+          x -= speed;// 移動角色
           if (x<=SCENE_PADDING) { // 限制角色移動範圍在場景範圍內
             x = SCENE_PADDING;
           }
@@ -42,7 +166,8 @@ class Player { //<>//
           }
         }
         if (key == 'd' || key == 'D') {
-          x += 14;// 移動角色
+          moving =true;
+          x += speed;// 移動角色
           if (x >= sceneWidth - SCENE_PADDING) { // 限制角色移動範圍在場景範圍內
             x = sceneWidth - SCENE_PADDING;
           }
@@ -52,83 +177,33 @@ class Player { //<>//
             xOnScreen = width/2 + MOVING_AREA/2;
           }
         }
+      }else{
+        moving = false;
       }
     }
-    
-  }
-  void doorInterect() {
-    switch(where) {
-    case "HALL":// 走廊通往各個教室
-      if (x >= 790 && x <= 850) {
-        enterDoor("HALL", "WORKING");
-      }
-      if (x >= 960 && x <= 1060) {
-        enterDoor("HALL", "ADMIN");
-      }
-      if (x >= 1685 && x <= 1765) {
-        enterDoor("HALL", "CUTTING");
-      }
-      if (x >= 2250 && x <= 2340) {
-        enterDoor("HALL", "GRINDING");
-      }
-      break;
-    case "WORKING":// 工作室回走廊
-      if (x >= 1150 && x <= 1250) {
-        enterDoor("WORKING", "HALL");
-      }
-      break;
-    case "CUTTING":// 切削室回走廊
-      if (x >= 430 && x <= 520) {
-        enterDoor("CUTTING", "HALL");
-      }
-      break;
-    case "GRINDING":// 研磨室回走廊 
-      if (x >= 1115 && x <= 1205) {
-        enterDoor("GRINDING", "HALL");
-      }
-      break;
-    case "ADMIN": // 助教室回走廊
-      if (x >= 110 && x <= 200) {
-        enterDoor("ADMIN", "HALL");
-      }
-      break;
+    if(moving){
+      movingTimer++;
     }
   }
-  void enterDoor(String from, String to) {
-    if (keyPressed && (key == 'w' || key == 'W') && enterDoorCD == 0) {
-      if (from == "HALL") {
-        switch(to) {
-        case "WORKING":
-          x = 1200;
-          break;
-        case "CUTTING":
-          x = 480;
-          break;
-        case "GRINDING":
-          x = 1160;
-          break;
-        case "ADMIN":
-          x = 155;
-          break;
-        }
-      } else {
-        switch(from) {
-        case "WORKING":
-          x = 835;
-          break;
-        case "CUTTING":
-          x = 1730;
-          break;
-        case "GRINDING":
-          x = 2300;
-          break;
-        case "ADMIN":
-          x = 1015;
-          break;
-        }
+  
+  void getItem(Item item){
+    bag.add(item);
+  }
+  
+  void removeItem(String name){
+    for(int i=0;i<bag.size();i++){
+      if(bag.get(i).name==name){
+        bag.remove(i);
       }
-      where = to;
-      enterDoorCD = 30;
     }
+  }
+  
+  Boolean have(String item){
+    for(int i=0;i<bag.size();i++){
+      if(item == bag.get(i).name){
+        return true;
+      }
+    }
+    return false;
   }
 }

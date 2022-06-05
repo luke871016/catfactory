@@ -11,5 +11,5 @@ void loadData(){
   JSONObject playerData = loadJSONObject("data/data.json");
   float x = playerData.getFloat("x");
   String where = playerData.getString("where");
-  player = new Player(x,where);
+  //player = new Player(x,where);
 }
