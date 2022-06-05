@@ -159,7 +159,7 @@ class Dialogue extends Animation{
   
   void clickWaiting(){
     if((type == "DIALOGUE" && timer == texts[playing].length()) || (type == "ITEMINFO" && timer == duration) || (type == "TEXT" && timer == duration)){
-      switch(type){
+      switch(type){ // 箭頭指示符號
         case "DIALOGUE" : case "ITEMINFO":
           image(textend,963,375,35,23);
           break;

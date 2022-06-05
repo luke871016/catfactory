@@ -4,9 +4,28 @@ PImage cha_Bleft,cha_Bleft2,cha_Bright,cha_Bright2,cha_Bback,cha_Bbackblack;
 PImage cha_Bworkup,cha_Bworkup2,cha_Bworkdown,cha_Bworkblack_up,cha_Bworkblack_down;
 PImage cha_Cleft,cha_Cleft2,cha_Cright,cha_Cright2,cha_Cback,cha_Cbackblack;
 PImage cha_Cworkup,cha_Cworkup2,cha_Cworkdown,cha_Cworkblack_up,cha_Cworkblack_down;
-PImage face_A1,face_A2,face_A3,face_B1,face_B2,face_B3,face_C1,face_C2,face_C3;
+PImage face_A1,face_A2,face_A3,face_B1,face_B2,face_B3,face_C1,face_C2,face_C3,face_orangecat;
+PImage orangecat_pu_a,orangecat_pu_a2,orangecat_pu_a3,orangecat_pu_a4,orangecat_pu_a5,orangecat_pu_b,
+orangecat_pu_b2,orangecat_pu_b3,orangecat_pu_b4,orangecat_pu_b5,orangecat_pu_c,orangecat_pu_c2,orangecat_pu_c3,orangecat_pu_c4,orangecat_pu_c5;
 
 void loadPlayerImg(){
+  orangecat_pu_a = loadImage("img/CG/orangecat/orangecat_pu_a.png");
+  orangecat_pu_a2 = loadImage("img/CG/orangecat/orangecat_pu_a2.png");
+  orangecat_pu_a3 = loadImage("img/CG/orangecat/orangecat_pu_a3.png");
+  orangecat_pu_a4 = loadImage("img/CG/orangecat/orangecat_pu_a4.png");
+  orangecat_pu_a5 = loadImage("img/CG/orangecat/orangecat_pu_a5.png");
+  orangecat_pu_b = loadImage("img/CG/orangecat/orangecat_pu_b.png");
+  orangecat_pu_b2 = loadImage("img/CG/orangecat/orangecat_pu_b2.png");
+  orangecat_pu_b3 = loadImage("img/CG/orangecat/orangecat_pu_b3.png");
+  orangecat_pu_b4 = loadImage("img/CG/orangecat/orangecat_pu_b4.png");
+  orangecat_pu_b5 = loadImage("img/CG/orangecat/orangecat_pu_b5.png");
+  orangecat_pu_c = loadImage("img/CG/orangecat/orangecat_pu_c.png");
+  orangecat_pu_c2 = loadImage("img/CG/orangecat/orangecat_pu_c2.png");
+  orangecat_pu_c3 = loadImage("img/CG/orangecat/orangecat_pu_c3.png");
+  orangecat_pu_c4 = loadImage("img/CG/orangecat/orangecat_pu_c4.png");
+  orangecat_pu_c5 = loadImage("img/CG/orangecat/orangecat_pu_c5.png");
+  
+  face_orangecat = loadImage("img/face/face_orangecat.png");
   face_A1 = loadImage("img/face/face_A1.png");
   face_A2 = loadImage("img/face/face_A2.png");
   face_A3 = loadImage("img/face/face_A3.png");
@@ -51,7 +70,7 @@ void loadPlayerImg(){
   cha_Cworkblack_down = loadImage("img/characters/C/cha_Cworkblack_down.png");
 }
 
-final int PLAYERX_INIT = 3111;
+final int PLAYERX_INIT = 2893;
 final int PLAYERY_INIT = 195;
 class Player {
   float x; //玩家在遊戲中的絕對座標
@@ -69,6 +88,7 @@ class Player {
   
   PImage left1,left2,right1,right2,back,backBlack;
   PImage face1,face2,face3;
+  PImage pu1,pu2,pu3,pu4,pu5;
   ArrayList<Item> bag = new ArrayList<Item>(1);
   
 
@@ -92,6 +112,11 @@ class Player {
         face1 = face_A1;
         face2 = face_A2;
         face3 = face_A3;
+        pu1 = orangecat_pu_a;
+        pu2 = orangecat_pu_a2;
+        pu3 = orangecat_pu_a3;
+        pu4 = orangecat_pu_a4;
+        pu5 = orangecat_pu_a5;
         break;
       case 1:
         left1 = cha_Bleft;
@@ -103,6 +128,11 @@ class Player {
         face1 = face_B1;
         face2 = face_B2;
         face3 = face_B3;
+        pu1 = orangecat_pu_b;
+        pu2 = orangecat_pu_b2;
+        pu3 = orangecat_pu_b3;
+        pu4 = orangecat_pu_b4;
+        pu5 = orangecat_pu_b5;
         break;
       case 2:
         left1 = cha_Cleft;
@@ -114,6 +144,11 @@ class Player {
         face1 = face_C1;
         face2 = face_C2;
         face3 = face_C3;
+        pu1 = orangecat_pu_c;
+        pu2 = orangecat_pu_c2;
+        pu3 = orangecat_pu_c3;
+        pu4 = orangecat_pu_c4;
+        pu5 = orangecat_pu_c5;
         break;
     }
   }
@@ -127,6 +162,8 @@ class Player {
   //  this.where = where;
   //}
   
+  float xOffset = -63;
+  float yOffset = 0;
   void display() {
     rectMode(CENTER);
     if(movingTimer%20<=10){
@@ -145,7 +182,22 @@ class Player {
     if(direction == "BACK"){
       currentImg = back;
     }
-    image(currentImg,x-63, y);
+    if(direction == "PU1"){
+      currentImg = pu1;
+    }
+    if(direction == "PU2"){
+      currentImg = pu2;
+    }
+    if(direction == "PU3"){
+      currentImg = pu3;
+    }
+    if(direction == "PU4"){
+      currentImg = pu4;
+    }
+    if(direction == "PU5"){
+      currentImg = pu5;
+    }
+    image(currentImg,x+yOffset, y+yOffset);
   }
   
   void move() {

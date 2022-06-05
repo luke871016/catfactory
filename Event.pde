@@ -109,8 +109,9 @@ class Event{
   
   //滑鼠點擊偵測
   Boolean clicked(){
-    if(hovered() && player.moveable && stage!=-1){
+    if(hovered() && player.moveable && stage!=-1 && clickCD == 0){
       if(mousePressed){
+        clickCD = 15;
         return true;
       }
     }

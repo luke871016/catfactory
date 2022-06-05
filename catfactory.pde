@@ -39,6 +39,7 @@ void draw(){
       // # 物件顯示
       pushMatrix();
         cameraOffset();// 鏡頭捲動
+        setCamera();// 設定鏡頭位置（事件開啟後使用）
         sceneLayer0();// 場景圖層0
         sceneLayer1();// 場景圖層1 
         player.display();// 玩家
@@ -68,8 +69,16 @@ void cameraOffset(){
   if(cameraOffsetX <= -sceneWidth+width){
     cameraOffsetX= -sceneWidth+width;
   }
-  
   translate(cameraOffsetX,0);
+}
+
+float cameraX;
+Boolean setCamera = false;
+void setCamera(){
+  if(setCamera){
+    translate(-cameraOffsetX,0);
+    translate(cameraX,0);
+  }
 }
 
 void initGame(){

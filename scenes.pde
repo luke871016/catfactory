@@ -18,8 +18,33 @@ PImage scene_catcan,scene_funnycatstick,scene_goggles,scene_note,scene_note2,sce
 scene_paper,scene_papertape,scene_pu,scene_sandpaper,scene_shovel,scene_spraypaintcan,scene_toolbox,
 scene_triangleboard,scene_unfoldedBox,scene_utilityknife,scene_utilityknife2,scene_verniercaliper;
 
+// CG圖片
+PImage cgmask;
+PImage cube_hand;
+PImage[] cube_making;
+PImage[] orangecat_pu;
+PImage orangecatLeft1,orangecatLeft2,orangecatSit,orangecat_catchpu;
+
 // 載入圖片
 void loadSceneImg(){
+  //CG圖片
+  cube_hand = loadImage("img/CG/cube/cube_hand.png");
+  cube_making = new PImage[5];
+  cube_making[0] = loadImage("img/CG/cube/cube_making1.png");
+  cube_making[1] = loadImage("img/CG/cube/cube_making2.png");
+  cube_making[2] = loadImage("img/CG/cube/cube_making3.png");
+  cube_making[3] = loadImage("img/CG/cube/cube_making4.png");
+  cube_making[4] = loadImage("img/CG/cube/cube_making5.png");
+  cgmask = loadImage("img/CG/mask.png");
+  
+  orangecat_catchpu = loadImage("img/characters/orangecat/orangecat_catchpu.png");
+  orangecatSit = loadImage("img/characters/orangecat/orangecat_sit.png");
+  orangecatLeft1 = loadImage("img/characters/orangecat/orangecat_left.png");
+  orangecatLeft2 = loadImage("img/characters/orangecat/orangecat_left2.png");
+  orangecat_pu = new PImage[3];
+  orangecat_pu[0] = loadImage("img/CG/orangecat/orangecat_meow.png");
+  orangecat_pu[1] = loadImage("img/CG/orangecat/orangecat_meow2.png");
+  orangecat_pu[2] = loadImage("img/CG/orangecat/orangecat_meow3.png");
   // 背景
   player_bg = loadImage("img/scene/background/player_bg.png");
   hall_bg = loadImage("img/scene/background/hall_bg.png");
@@ -110,12 +135,14 @@ void sceneLayer1(){
   adminDoor.display();
   cuttingDoor.display();
   grindingDoor.display();
-
   switch(player.where){
     case "HALL":
+      tint(220);
       for(int i=0;i<20;i++){
         lockers[i].display();
       }
+      noTint();
+      orangecat.display();
       verniercaliper.display();
       triangleboard.display();
       pu.display();
@@ -130,9 +157,9 @@ void sceneLayer1(){
     case "CUTTING":
       goggles.display();
       sandpaper.display();
-      grindingMachineA.display();
-      grindingMachineB.display();
-      grindingMachineC.display();
+      bandSawA.display();
+      bandSawB.display();
+      bandSawC.display();
       break;
     case "GRINDING":
       lathe.display();
