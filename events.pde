@@ -268,7 +268,7 @@ void initEvents(){
   boxAni0[1] = new Dialogue(player.face1,player.name,"看起來都切好了只差要黏貼起來而已，旁邊擺這罐白膠就是這個意思嗎？");
   boxAni0[2] = new Dialogue(player.face2,player.name,"這個半成品也切得太好了吧...");
   boxAni0[3] = new Dialogue(player.face2,player.name,"黏起來會直接過的那種欸！");
-  boxAni0[4] = new Dialogue(player.face2,player.name,"不過還缺少直角規、游標卡尺之類的工具，黏歪了可就糟了");
+  boxAni0[4] = new Dialogue(player.face2,player.name,"不過我還缺少直角規、游標卡尺之類的工具，黏歪了可就糟了");
   
   boxAni1 = new Animation[1];
   boxAni1[0] = new Dialogue(player.face2,player.name,"還缺少直角規、游標卡尺之類的工具，黏歪了可就糟了");
@@ -428,8 +428,8 @@ void eventsUpdate(){
   }
   // ***做封扣方盒***
   if(box.clicked() && box.playing == false && box.stage!=-1){
-    if(player.have("工具箱") && player.have("游標卡尺")){
-      box.stage = 2;
+    if(player.have("工具箱") && player.have("游標卡尺")&& box.stage==1){
+        box.stage = 2;
     }
     animationsReset(boxAni1);
     box.playing = true;
