@@ -6,6 +6,7 @@ PImage working_bg;
 PImage cutting_bg;
 PImage grinding_bg;
 PImage homepage_bg;
+PImage start_background;
 
 // 場景部件
 PImage admin_table,door_a_inside,door_b_inside,door_a,door_b,door_locker,elevator_open;
@@ -22,12 +23,41 @@ scene_triangleboard,scene_unfoldedBox,scene_utilityknife,scene_utilityknife2,sce
 PImage cgmask;
 PImage cube_hand;
 PImage[] cube_making;
+PImage[] pu_cutting;
+PImage[] pu_turning;
 PImage[] orangecat_pu;
 PImage orangecatLeft1,orangecatLeft2,orangecatSit,orangecat_catchpu;
+PImage blackCat1,blackCat2;
+PImage[] reblackcat_blc;
+PImage[] reblackcat_O;
 
 // 載入圖片
 void loadSceneImg(){
   //CG圖片
+  reblackcat_blc = new PImage[8];
+  for(int i=0;i<8;i++){
+    reblackcat_blc[i] = loadImage("img/CG/reblackcat/reblackcat_blc"+(i+1)+".png");
+  }
+  
+  reblackcat_O = new PImage[6];
+  for(int i=0;i<6;i++){
+    reblackcat_O[i] = loadImage("img/CG/reblackcat/reblackcat_O"+(i+1)+".png");
+  }
+  
+  blackCat1 = loadImage("img/characters/blackCat/cat_blackcat.png");
+  blackCat2 = loadImage("img/characters/blackCat/cat_blackcat2.png");
+  
+  pu_turning = new PImage[3];
+  pu_turning[0] = loadImage("img/CG/popcat/popcat_rickroll.png");
+  pu_turning[1] = loadImage("img/CG/popcat/popcat_rickroll2.png");
+  pu_turning[2] = loadImage("img/CG/popcat/popcat_camera_pu.png");
+  
+  pu_cutting = new PImage[4];
+  pu_cutting[0] = loadImage("img/CG/cutting/pu_cutting1.png");
+  pu_cutting[1] = loadImage("img/CG/cutting/pu_cutting2.png");
+  pu_cutting[2] = loadImage("img/CG/cutting/pu_cutting3.png");
+  pu_cutting[3] = loadImage("img/CG/cutting/pu_cutting4.png");
+  
   cube_hand = loadImage("img/CG/cube/cube_hand.png");
   cube_making = new PImage[5];
   cube_making[0] = loadImage("img/CG/cube/cube_making1.png");
@@ -46,6 +76,7 @@ void loadSceneImg(){
   orangecat_pu[1] = loadImage("img/CG/orangecat/orangecat_meow2.png");
   orangecat_pu[2] = loadImage("img/CG/orangecat/orangecat_meow3.png");
   // 背景
+  start_background = loadImage("img/scene/background/start_background.png");
   player_bg = loadImage("img/scene/background/player_bg.png");
   hall_bg = loadImage("img/scene/background/hall_bg.png");
   admin_bg = loadImage("img/scene/background/admin_bg.png");
@@ -101,11 +132,15 @@ final float HALL_WIDTH = 3748;
 final float WORKING_WIDTH = 1330;
 final float CUTTING_WIDTH = 1330;
 final float GRINDING_WIDTH = 1330;
-final float ADMIN_WIDTH = 1330;
+final float ADMIN_WIDTH = 1331;
 
 void sceneLayer0(){
   noStroke();
   switch(player.where){
+    case "START":
+      sceneWidth = 1024;
+      image(start_background,0,0,sceneWidth,420);
+      break;
     case "HALL":
       sceneWidth = HALL_WIDTH;
       image(hall_bg,0,0,sceneWidth,420);
@@ -135,6 +170,7 @@ void sceneLayer1(){
   adminDoor.display();
   cuttingDoor.display();
   grindingDoor.display();
+  //elevator.display();
   switch(player.where){
     case "HALL":
       tint(220);
@@ -166,6 +202,7 @@ void sceneLayer1(){
       funnycatstick.display();
       break;
     case "ADMIN":
+      orangecat.display();
       catcan.display();
       image(admin_table,534,254);
       image(admin_table,809,254);

@@ -5,7 +5,7 @@ item_spraypaintcan_small,item_toolbox_small,item_triangleboard_small,item_utilit
 PImage item_camera_big,item_camerabody_big,item_catcan_big,item_funnycatstick_big,item_goggles_big,item_key_big,
 item_lens_black_big,item_lens_pu_big,item_note_big,item_ntustcard_big,item_paper_big,
 item_papertape_big,item_pu_big,item_sandpaper_big,item_shovel_big,item_slenderpu_big,
-item_spraypaintcan_big,item_toolbox_big,item_triangleboard_big,item_utilityknife_big,item_utilityknife2_big,item_verniercaliper_big,item_box_big;
+item_spraypaintcan_big,item_toolbox_big,item_triangleboard_big,item_utilityknife_big,item_utilityknife2_big,item_verniercaliper_big,item_box_big,item_camera_big2;
 void loadItemImg(){
   //load small img
   item_camera_small = loadImage("img/item/small/item_camera_small.png");
@@ -33,6 +33,7 @@ void loadItemImg(){
   item_box_small = loadImage("img/item/small/item_box_small.png");
   //load big img
   item_camera_big = loadImage("img/item/big/item_camera_big.png");
+  item_camera_big2 = loadImage("img/item/big/item_camera_big2.png");
   item_camerabody_big = loadImage("img/item/big/item_camerabody_big.png");
   item_catcan_big = loadImage("img/item/big/item_catcan_big.png");
   item_funnycatstick_big = loadImage("img/item/big/item_funnycatstick_big.png");

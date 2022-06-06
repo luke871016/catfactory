@@ -6,9 +6,28 @@ PImage cha_Cleft,cha_Cleft2,cha_Cright,cha_Cright2,cha_Cback,cha_Cbackblack;
 PImage cha_Cworkup,cha_Cworkup2,cha_Cworkdown,cha_Cworkblack_up,cha_Cworkblack_down;
 PImage face_A1,face_A2,face_A3,face_B1,face_B2,face_B3,face_C1,face_C2,face_C3,face_orangecat;
 PImage orangecat_pu_a,orangecat_pu_a2,orangecat_pu_a3,orangecat_pu_a4,orangecat_pu_a5,orangecat_pu_b,
-orangecat_pu_b2,orangecat_pu_b3,orangecat_pu_b4,orangecat_pu_b5,orangecat_pu_c,orangecat_pu_c2,orangecat_pu_c3,orangecat_pu_c4,orangecat_pu_c5;
+orangecat_pu_b2,orangecat_pu_b3,orangecat_pu_b4,orangecat_pu_b5,orangecat_pu_c,orangecat_pu_c2,
+orangecat_pu_c3,orangecat_pu_c4,orangecat_pu_c5,orangecat_pu_a_black,orangecat_pu_b_black,orangecat_pu_c_black;
+
+PImage[] rcA,rcB,rcC;
 
 void loadPlayerImg(){
+  rcA = new PImage[13];
+  for(int i=0;i<13;i++){
+     rcA[i] = loadImage("img/CG/reblackcat/reblackcat_A"+(i+1)+".png");
+  }
+  rcB = new PImage[13];
+  for(int i=0;i<13;i++){
+     rcB[i] = loadImage("img/CG/reblackcat/reblackcat_B"+(i+1)+".png");
+  }
+  rcC = new PImage[13];
+  for(int i=0;i<13;i++){
+     rcC[i] = loadImage("img/CG/reblackcat/reblackcat_C"+(i+1)+".png");
+  }
+  
+  orangecat_pu_a_black = loadImage("img/CG/orangecat/orangecat_pu_a_black.png");
+  orangecat_pu_b_black = loadImage("img/CG/orangecat/orangecat_pu_b_black.png");
+  orangecat_pu_c_black = loadImage("img/CG/orangecat/orangecat_pu_c_black.png");
   orangecat_pu_a = loadImage("img/CG/orangecat/orangecat_pu_a.png");
   orangecat_pu_a2 = loadImage("img/CG/orangecat/orangecat_pu_a2.png");
   orangecat_pu_a3 = loadImage("img/CG/orangecat/orangecat_pu_a3.png");
@@ -70,11 +89,12 @@ void loadPlayerImg(){
   cha_Cworkblack_down = loadImage("img/characters/C/cha_Cworkblack_down.png");
 }
 
-final int PLAYERX_INIT = 2893;
+final int PLAYERX_INIT = 500;
 final int PLAYERY_INIT = 195;
 class Player {
   float x; //玩家在遊戲中的絕對座標
   float y; //玩家的Y位置
+  float yModify = 0; // 玩家身高校正
   float xOnScreen; // 玩家顯示在遊戲畫面上的座標
   String direction; //玩家的方向狀態（LEFT朝左、RIGHT朝右、BACK背對）
   String where; // 玩家目前所在場地（HALL 走廊、WORKING 手作室、CUTTING 切削室、GRINDING 研磨室、ADMIN 助教室）
@@ -88,7 +108,9 @@ class Player {
   
   PImage left1,left2,right1,right2,back,backBlack;
   PImage face1,face2,face3;
-  PImage pu1,pu2,pu3,pu4,pu5;
+  PImage pu1,pu2,pu3,pu4,pu5,pu_black;
+  PImage[] rc;
+  int CGI = -1;
   ArrayList<Item> bag = new ArrayList<Item>(1);
   
 
@@ -98,7 +120,7 @@ class Player {
     y = PLAYERY_INIT;
     xOnScreen = width/2;
     direction = "LEFT";
-    where = "HALL";
+    where = "START";
     this.name = name;
     this.skin = skin;
     switch(skin){
@@ -117,6 +139,9 @@ class Player {
         pu3 = orangecat_pu_a3;
         pu4 = orangecat_pu_a4;
         pu5 = orangecat_pu_a5;
+        pu_black = orangecat_pu_a_black;
+        yModify = 0;
+        rc = rcA;
         break;
       case 1:
         left1 = cha_Bleft;
@@ -133,6 +158,9 @@ class Player {
         pu3 = orangecat_pu_b3;
         pu4 = orangecat_pu_b4;
         pu5 = orangecat_pu_b5;
+        pu_black = orangecat_pu_b_black;
+        yModify = 0;
+        rc = rcB;
         break;
       case 2:
         left1 = cha_Cleft;
@@ -149,6 +177,9 @@ class Player {
         pu3 = orangecat_pu_c3;
         pu4 = orangecat_pu_c4;
         pu5 = orangecat_pu_c5;
+        pu_black = orangecat_pu_c_black;
+        yModify = -23;
+        rc = rcC;
         break;
     }
   }
@@ -197,7 +228,16 @@ class Player {
     if(direction == "PU5"){
       currentImg = pu5;
     }
-    image(currentImg,x+yOffset, y+yOffset);
+    if(direction == "PUBLACK"){
+      currentImg = pu_black;
+    }
+    if(CGI!=-1){
+      if(rc[CGI]!=null){
+        currentImg = rc[CGI];
+      }
+      
+    }
+    image(currentImg,x+xOffset, y+yOffset+yModify);
   }
   
   void move() {

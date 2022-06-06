@@ -11,8 +11,8 @@ Event[] lockers;
 Animation[] verniercaliperAni,triangleboardAni,puAni,paperAni,papertapeAni,toolboxAni,orangecatAni,orangecatAni2,orangecatAni3;
 
 //助教室物件
-Event catcan,upperLocker,lowerLocker;
-Animation[] catcanAni,upperLockerAni,lowerLockerAni;
+Event catcan;
+Animation[] catcanAni;
 
 //手做室物件
 Event box,shovel;
@@ -25,7 +25,7 @@ Animation[] bandSawAni,bandSawAni2,sandpaperAni;
 
 //研磨室物件
 Event lathe,funnycatstick,spraypaintcan,utilityknife2;
-Animation[] latheAni,funnycatstickAni,spraypaintcanAni,utilityknife2Ani;
+Animation[] latheAni,latheAni2,funnycatstickAni,spraypaintcanAni,utilityknife2Ani;
 
 PImage piece;
 
@@ -101,21 +101,21 @@ void initEvents(){
   //游標卡尺
   Item itemVerniercaliper = new Item(item_verniercaliper_small,item_verniercaliper_big,"游標卡尺","平常拿來測量的道具，聽說是可以解除某種封印的神器...","「隱藏著黑暗力量的鑰匙啊，在我面前顯示你真正的力量！\n現在以你的主人之名命令－封印解除！」\n據說可以解鎖助教室——沒，它只是一柄普通的游標卡尺。");
   verniercaliperAni = new Animation[3];
-  verniercaliperAni[0] = new Dialogue("獲得道具","「"+itemVerniercaliper.name+"」");
+  verniercaliperAni[0] = new Dialogue("獲得物品","「"+itemVerniercaliper.name+"」");
   verniercaliperAni[1] = new Dialogue(itemVerniercaliper);
   verniercaliperAni[2] = new Animation("GET_ITEM",itemVerniercaliper); 
   
   //三角板
   Item itemTriangleboard = new Item(item_triangleboard_small,item_triangleboard_big,"三角板","置物櫃裡找到的三角板，看起來做完封扣方盒後就沒在使用了...");
   triangleboardAni = new Animation[3];
-  triangleboardAni[0] = new Dialogue("獲得道具","「"+itemTriangleboard.name+"」");
+  triangleboardAni[0] = new Dialogue("獲得物品","「"+itemTriangleboard.name+"」");
   triangleboardAni[1] = new Dialogue(itemTriangleboard);
   triangleboardAni[2] = new Animation("GET_ITEM",itemTriangleboard); 
   triangleboard.stage = -1;
   //紙膠帶
   Item itemPapertape = new Item(item_papertape_small,item_papertape_big,"紙膠帶","放在櫃子裡就會輕易被別人A走的好東西");
   papertapeAni = new Animation[3];
-  papertapeAni[0] = new Dialogue("獲得道具","「"+itemPapertape.name+"」");
+  papertapeAni[0] = new Dialogue("獲得物品","「"+itemPapertape.name+"」");
   papertapeAni[1] = new Dialogue(itemPapertape);
   papertapeAni[2] = new Animation("GET_ITEM",itemPapertape); 
   papertape.stage = -1;
@@ -123,14 +123,31 @@ void initEvents(){
   // 工具箱
   Item itemToolbox = new Item(item_toolbox_small,item_toolbox_big,"工具箱","丟在角落的一只破舊工具箱，裡面放了一些基本的工具，至少夠用來做一些基礎的草模");
   toolboxAni = new Animation[3];
-  toolboxAni[0] = new Dialogue("獲得道具","「"+itemToolbox.name+"」");
+  toolboxAni[0] = new Dialogue("獲得物品","「"+itemToolbox.name+"」");
   toolboxAni[1] = new Dialogue(itemToolbox);
   toolboxAni[2] = new Animation("GET_ITEM",itemToolbox); 
 
   // ----助教室物件----
   catcan = new Event(scene_catcan,"ADMIN",407,187,46,46);
-  upperLocker = new Event("ADMIN",110,145,277,92);
-  lowerLocker = new Event("ADMIN",110,253,277,338);
+  
+  //*************黑貓事件、取得學生證***********
+  Item itemNtustcard = new Item(item_ntustcard_small,item_ntustcard_big,"學生證","小咪吐出來的學生證，似乎是一位畢業學長遺失的卡。可以使用於電梯。");
+  catcanAni = new Animation[13];
+  catcanAni[0] = new Dialogue(player.face2,player.name,"這櫃子寫著「防禦用具區」？");
+  catcanAni[1] = new Dialogue("獲得物品","貓罐頭");
+  catcanAni[2] = new Dialogue(player.face2,player.name,"怎麼這邊是放著貓罐頭？");
+  catcanAni[3] = new Dialogue(player.face3,player.name,"等等... 又是這個聲音....");
+  catcanAni[4] = new Animation("BLACK_CAT",1140,false);
+  catcanAni[5] = new Animation("BLACK_FADE_OUT",15,false);
+  catcanAni[6] = new Dialogue("失去物品","貓罐頭");
+  catcanAni[7] = new Dialogue("獲得物品","學生證");
+  catcanAni[8] = new Dialogue(itemNtustcard);
+  catcanAni[9] = new Animation("GET_ITEM",itemNtustcard);
+  catcanAni[10] = new Dialogue(player.face2,player.name,"小咪你到底是何方神聖啊...");
+  catcanAni[11] = new Dialogue(player.face2,player.name,"學生證又是怎麼變出來的...");
+  catcanAni[12] = new Dialogue(player.face1,player.name,"啊... 這樣就可以從電梯離開了！");
+  
+  //player.getItem(itemNtustcard);
   
   // ----研磨室物件----
   lathe = new Event(grinding_lathe,"GRINDING",600,160,458,197);
@@ -138,45 +155,94 @@ void initEvents(){
   spraypaintcan = new Event(scene_spraypaintcan,"GRINDING",164,247,46,45);
   utilityknife2 = new Event(scene_utilityknife2,"GRINDING",309,258,46,45);
   
+  //********PU車床加工**********
+  
+  Item itemLens = new Item(item_lens_pu_small,item_lens_pu_big,"PU相機鏡頭","車床加工出來的相機鏡頭，還沒有噴漆");
+  Item itemLensBlack = new Item(item_lens_black_small,item_lens_black_big,"相機鏡頭","加工好的相機鏡頭，可以與機身組合成完整的相機模型");
+  Item itemCamera = new Item(item_camera_small,item_camera_big,"EK相機模型","模型課的作業之一，機身為EK板製作，表面以水泥漆上色；背板使用3mm透明壓克力製作；鏡頭使用PU發泡材經木工車床加工而成。");
+  Item cameraBack = new Item(item_camera_small,item_camera_big2,"相機模型的背面","面板上似乎浮現出了幾個數字...");
+  
+  latheAni = new Animation[1];
+  latheAni[0] = new Dialogue(player.face1,player.name,"木工車床有電源呢，旁邊也有車刀，但我現在好像沒什麼東西好加工的");
+  
+  latheAni2 = new Animation[28];
+  latheAni2[0] = new Dialogue(player.face1,player.name,"來加工相機鏡頭吧，在這個世界做模型好像還滿快樂的？都做的很順暢");
+  latheAni2[1] = new Animation("BLACK_FADE_IN",15,false);
+  latheAni2[2] = new Animation("PU_TURNING",240,true);
+  latheAni2[3] = new Animation("BLACK_FADE_OUT",1,false);
+  latheAni2[4] = new Dialogue("失去物品","「加工過的PU塊」");
+  latheAni2[5] = new Dialogue("獲得物品","「"+itemLens.name+"」");
+  latheAni2[6] = new Dialogue(itemLens);
+  latheAni2[7] = new Dialogue(player.face1,player.name,"這樣就將鏡頭加工好了，撿個噴漆罐來噴漆吧");
+  latheAni2[8] = new Dialogue(player.face2,player.name,"這個聲音是....？");
+  latheAni2[9] = new Animation("PU_BLACK",360,false);
+  latheAni2[10] = new Dialogue(player.face3,player.name,"鏡頭........");
+  latheAni2[11] = new Dialogue(player.face3,player.name,"變成黑色的了....");
+  latheAni2[12] = new Dialogue("失去物品","「PU相機鏡頭」");
+  latheAni2[13] = new Dialogue("獲得物品","「"+itemLensBlack.name+"」");
+  latheAni2[14] = new Dialogue(itemLensBlack);
+  latheAni2[15] = new Dialogue(player.face2,player.name,"不知道剛剛那個黑影是什麼，感覺好嚇人。");
+  latheAni2[16] = new Dialogue(player.face1,player.name,"但這樣子就不用噴漆了欸");
+  latheAni2[17] = new Dialogue(player.face1,player.name,"可以把相機組合起來了");
+  latheAni2[18] = new Dialogue("失去物品","「相機鏡頭」、「相機機身」");
+  latheAni2[19] = new Dialogue("獲得物品","「EK相機模型」");
+  latheAni2[20] = new Dialogue(itemCamera);
+  latheAni2[21] = new Dialogue(player.face1,player.name,"終於完成了");
+  latheAni2[22] = new Dialogue(player.face2,player.name,"等等，這模型的背面...");
+  latheAni2[23] = new Dialogue(cameraBack);
+  latheAni2[24] = new Dialogue(player.face1,player.name,"這些數字應該就是助教室的密碼吧，進去助教室應該就能逃出這裡了");
+  latheAni2[25] = new Animation("GET_ITEM",itemCamera);
+  latheAni2[26] = new Animation("LOSE_ITEM","相機機身");
+  latheAni2[27] = new Animation("LOSE_ITEM","加工過的PU塊");
+  
   Item itemFunnycatstick = new Item(item_funnycatstick_small,item_funnycatstick_big,"逗貓棒","一根看起來很普通的逗貓棒，一端是綁著七彩羽毛的一隻老鼠布偶，但貓咪們為之瘋狂。");
   String[] fcs = {"工廠裡竟然有逗貓棒，真是太奇妙了"};
   funnycatstickAni = new Animation[4];
-  funnycatstickAni[0] = new Dialogue("獲得道具","「"+itemFunnycatstick.name+"」");
+  funnycatstickAni[0] = new Dialogue("獲得物品","「"+itemFunnycatstick.name+"」");
   funnycatstickAni[1] = new Dialogue(itemFunnycatstick);
   funnycatstickAni[2] = new Animation("GET_ITEM",itemFunnycatstick); 
   funnycatstickAni[3] = new Dialogue(player.face2,player.name,fcs);
   
   Item itemSpraypaintcan = new Item(item_spraypaintcan_small,item_spraypaintcan_big,"噴漆罐","被隨意亂丟的噴漆罐，鐵樂士牌子的，有使用過的痕跡");
   spraypaintcanAni = new Animation[3];
-  spraypaintcanAni[0] = new Dialogue("獲得道具","「"+itemSpraypaintcan.name+"」");
+  spraypaintcanAni[0] = new Dialogue("獲得物品","「"+itemSpraypaintcan.name+"」");
   spraypaintcanAni[1] = new Dialogue(itemSpraypaintcan);
   spraypaintcanAni[2] = new Animation("GET_ITEM",itemSpraypaintcan);
   
   Item itemUtilityknife2 = new Item(item_utilityknife2_small,item_utilityknife2_big,"美工刀","OLFA牌的美工刀，刀片有一點生鏽，換個刀刃應該很好用。");
   utilityknife2Ani = new Animation[3];
-  utilityknife2Ani[0] = new Dialogue("獲得道具","「"+itemUtilityknife2.name+"」");
+  utilityknife2Ani[0] = new Dialogue("獲得物品","「"+itemUtilityknife2.name+"」");
   utilityknife2Ani[1] = new Dialogue(itemUtilityknife2);
   utilityknife2Ani[2] = new Animation("GET_ITEM",itemUtilityknife2);
   
   // ----切削室物件----
+  Item itemSlenderpu = new Item(item_slenderpu_small,item_slenderpu_big,"加工過的PU塊","工件準備上車床加工之前會先切削成八角柱形，可以讓車床加工時需去除的料件變少，增進效率");
+  
   bandSawA = new Event(grinding_machine_a,"CUTTING",641,41,156,200);
   bandSawB = new Event(grinding_machine_b,"CUTTING",890,48,156,200);
   bandSawC = new Event(grinding_machine_b,"CUTTING",1110,48,156,200);
   goggles = new Event(scene_goggles,"CUTTING",1238,332,46,45);
   sandpaper = new Event(scene_sandpaper,"CUTTING",872,310,46,45);
   
+  // ***** PU帶鋸機加工 ******
   bandSawAni = new Animation[1];
   bandSawAni[0] = new Dialogue(player.face1,player.name,"帶鋸機有電源呢，不過我現在好像沒什麼東西好加工的");
   
-  bandSawAni2 = new Animation[1];
+  bandSawAni2 = new Animation[7];
   bandSawAni2[0] = new Dialogue(player.face1,player.name,"終於拿到PU了，把PU切成容易車床加工的形狀吧！");
+  bandSawAni2[1] = new Animation("PU_CUTTING",240,true);
+  bandSawAni2[2] = new Dialogue("失去物品","「"+itemPu.name+"」");
+  bandSawAni2[3] = new Animation("LOSE_ITEM","PU塊");
+  bandSawAni2[4] = new Dialogue("獲得物品","「"+itemSlenderpu.name+"」");
+  bandSawAni2[5] = new Animation("GET_ITEM",itemSlenderpu);
+  bandSawAni2[6] = new Dialogue(itemSlenderpu);
   
   // ** 湘芸沒有畫物件的護目鏡QQ
   
   //砂紙
   Item itemSandpaper = new Item(item_sandpaper_small,item_sandpaper_big,"砂紙","爛爛的龍蝦牌200號砂紙，");
   sandpaperAni = new Animation[3];
-  sandpaperAni[0] = new Dialogue("獲得道具","「"+itemSandpaper.name+"」");
+  sandpaperAni[0] = new Dialogue("獲得物品","「"+itemSandpaper.name+"」");
   sandpaperAni[1] = new Dialogue(itemSandpaper);
   sandpaperAni[2] = new Animation("GET_ITEM",itemSandpaper); 
   
@@ -184,13 +250,16 @@ void initEvents(){
   box = new Event(scene_unfoldedBox,"WORKING",455,221,196,91);
   shovel = new Event(scene_shovel,"WORKING",1111,306,126,51);
   
+
   Item itemShovel = new Item(item_shovel_small,item_shovel_big,"鐵撬","一柄老舊生鏽的鐵撬。其中一端已經凹了。");
   String[] sho = {"這個鐵橇好像可以拿來開門"};
   shovelAni = new Animation[4];
   shovelAni[0] = new Dialogue(player.face1,player.name,sho);
-  shovelAni[1] = new Dialogue("獲得道具","「鐵橇」");
+  shovelAni[1] = new Dialogue("獲得物品","「鐵橇」");
   shovelAni[2] = new Dialogue(itemShovel);
   shovelAni[3] = new Animation("GET_ITEM",itemShovel); 
+  
+  //player.getItem(itemShovel);
   
   // ***製作封扣方盒事件***
   Item boxItem = new Item(item_box_small,item_box_big,"封扣方盒","模型課的經典作業，上面寫有疑似助教室電子鎖密碼，這次黏貼邊這麼完美，應該有第一堆的成績吧。\n（然後助教會把那個數字圈起來當作髒污... 壞助教...）");
@@ -210,27 +279,30 @@ void initEvents(){
   boxAni2[2] = new Animation("PLAYER_MOVE","WORKING",556);
   boxAni2[3] = new Animation("BOX_MAKING",240,true);
   boxAni2[4] = new Animation("BLACK_FADE_OUT",1,false);
-  boxAni2[5] = new Dialogue("獲得道具","「封扣方盒」");
+  boxAni2[5] = new Dialogue("獲得物品","「封扣方盒」");
   boxAni2[6] = new Dialogue(boxItem);
   boxAni2[7] = new Animation("GET_ITEM",boxItem); 
   boxAni2[8] = new Dialogue(player.face2,player.name,"感覺這個模型比我以前做的都還好...");
   boxAni2[9] = new Dialogue(player.face2,player.name,"這個盒子上面的數字...就是助教室密碼嗎？");
-  
   // ----開場劇情----
   startingEvent = new Event();
-  startingAni = new Animation[9];
+  startingAni = new Animation[13];
   String[] ses1 = {"已經連續三周模型都在第四堆了......這樣下去我會不會被當掉？","春節連假五天，還是乖乖在工廠裡練習做模型吧！"};
-  String[] ses2 = {"......","咦，學校又跳電了嗎？","真奇怪"};
-  String[] ses3 = {"電終於回來了","......","奇怪，我剛剛不是在手作室裡面嗎？","工廠變得好奇怪......","總之先四處看看吧。"};
-  startingAni[0] = new Animation("WAITING",15,false);
+  String[] ses2 = {"......","咦，學校又跳電了嗎？","真奇怪......."};
+  String[] ses3 = {"電終於回來了","......","奇怪，我剛剛不是在手作室裡面嗎？","而且工廠變得好奇怪......","白板上好像有張紙條，拿起來看看好了"};
+  startingAni[0] = new Animation("BLACK_FADE_OUT",30,false);
   startingAni[1] = new Dialogue(player.face1,player.name,ses1);
   startingAni[2] = new Animation("BLACK_FADE_IN",5,false);
   startingAni[3] = new Animation("WAITING",30,false);
   startingAni[4] = new Animation("PLAYER_MOVE","HALL",1104);
-  startingAni[5] = new Dialogue(player.face2,player.name,ses2);
+  startingAni[5] = new Dialogue(player.face3,player.name,ses2);
   startingAni[6] = new Animation("BLACK_FADE_OUT",90,false);
   startingAni[7] = new Animation("WAITING",30,false);
   startingAni[8] = new Dialogue(player.face1,player.name,ses3);
+  startingAni[9] = new Animation("WAITING",30,false);
+  startingAni[10] = new Dialogue("操作說明","按下 A、D 可以左右移動");
+  startingAni[11] = new Dialogue("操作說明","滑鼠點擊畫面可以進行探索");
+  startingAni[12] = new Dialogue("操作說明","按下 W 可以嘗試進出門");
   
   // ----紙條劇情----（取得紙條、手作室鑰匙）
   noteEvent = new Event(scene_note,"HALL",1141,149,77,51);
@@ -246,22 +318,50 @@ void initEvents(){
   Item itemNote = new Item(item_note_small,item_note_big,"紙條","一張不知道是誰留下的紙條，上面寫著許多提示與指引",noteInfo);
   
   noteEventAni[0] = new Dialogue(player.face1,player.name,wbs0_1);
-  noteEventAni[1] = new Dialogue("獲得道具","「紙條」");
+  noteEventAni[1] = new Dialogue("獲得物品","「紙條」");
   noteEventAni[2] = new Dialogue(itemNote);
   noteEventAni[3] = new Dialogue(player.face1,player.name,wbs0_2);
   noteEventAni[4] = new Dialogue(player.face3,player.name,"這裡不是工廠，我來到異世界了？！");
   noteEventAni[5] = new Dialogue(player.face2,player.name,"結果還不是一樣要叫我做模型... 傻眼...");
   noteEventAni[6] = new Dialogue(player.face1,player.name,"紙條背後好像還有東西");
-  noteEventAni[7] = new Dialogue("獲得道具","「手做室鑰匙」");
+  noteEventAni[7] = new Dialogue("獲得物品","「手做室鑰匙」");
   noteEventAni[8] = new Dialogue(itemKey);
   noteEventAni[9] = new Dialogue(player.face1,player.name,wbs0_3);
   noteEventAni[10] = new Animation("GET_ITEM",itemNote);
   noteEventAni[11] = new Animation("GET_ITEM",itemKey);
   noteEventAni[12] = new Dialogue("系統提示","點擊 B 可以打開包包檢視身上的物件");
+  
+  
+  //player.getItem(boxItem);
+  //player.getItem(itemCamera);
 }
 
 // 事件更新
 void eventsUpdate(){
+  // *********PU車床加工*********
+  if(lathe.clicked() && !lathe.playing){
+    lathe.playing = true;
+    animationsReset(latheAni);
+    if(player.have("加工過的PU塊") && lathe.stage == 0){
+      lathe.stage = 1;
+    }else{
+      lathe.stage = 0;
+    }
+  }
+  if(lathe.playing){
+    if(lathe.stage == 0){
+      animationsUpdate(latheAni);
+      if(animationsDone(latheAni)){
+        lathe.playing = false;
+      }
+    }else if(lathe.stage == 1){
+      animationsUpdate(latheAni2);
+      if(animationsDone(latheAni2)){
+        lathe.playing = false;
+      }
+    }
+  }
+  
   // *********PU帶鋸加工*********
   if((bandSawA.clicked()||bandSawB.clicked()||bandSawC.clicked()) && !bandSawA.playing){
     bandSawA.playing = true;
@@ -284,7 +384,6 @@ void eventsUpdate(){
         bandSawA.playing = false;
       }
     }
-  
   }
   
   // *********小咪搶pu********
@@ -327,7 +426,6 @@ void eventsUpdate(){
       }
     }
   }
-  println(player.moveable);
   // ***做封扣方盒***
   if(box.clicked() && box.playing == false && box.stage!=-1){
     if(player.have("工具箱") && player.have("游標卡尺")){
@@ -397,26 +495,27 @@ void eventsUpdate(){
   eventsOnce(spraypaintcan,spraypaintcanAni);
   eventsOnce(utilityknife2,utilityknife2Ani);
   eventsOnce(toolbox,toolboxAni);
+  eventsOnce(catcan,catcanAni);
   
   //可以重複觸發的對話跟事件
   eventsRepeat(paper,paperAni);
   
   //開場劇情更新
-  //if(startingEvent.stage!=-1){
-  //  player.moveable = false;
-  //  animationsUpdate(startingAni);
-  //  Boolean end = true;
-  //  for(int i=0;i<startingAni.length;i++){
-  //    if(!startingAni[i].closed){
-  //      end = false;
-  //      break;
-  //    }
-  //  }
-  //  if(end){
-  //    player.moveable = true;
-  //    startingEvent.stage = -1;
-  //  }
-  //}
+  if(startingEvent.stage!=-1){
+    player.moveable = false;
+    animationsUpdate(startingAni);
+    Boolean end = true;
+    for(int i=0;i<startingAni.length;i++){
+      if(!startingAni[i].closed){
+        end = false;
+        break;
+      }
+    }
+    if(end){
+      player.moveable = true;
+      startingEvent.stage = -1;
+    }
+  }
 }
 
 // 可以重複觸發的對話跟事件
@@ -473,10 +572,17 @@ void textDisplay(){
   eventTextDisplay(utilityknife2,utilityknife2Ani);
   eventTextDisplay(paper,paperAni);
   eventTextDisplay(toolbox,toolboxAni);
+  eventTextDisplay(catcan,catcanAni);
   
   //eventTextDisplay(box,boxAni2);
   
   eventTextDisplay(pu,puAni);
+  //****PU車床加工****
+  if(lathe.stage==0){
+    eventTextDisplay(lathe,latheAni);
+  }else if(lathe.stage==1){
+    eventTextDisplay(lathe,latheAni2);
+  }
   //****PU帶鋸機加工****
   if(bandSawA.stage==0){
     eventTextDisplay(bandSawA,bandSawAni);
@@ -509,6 +615,8 @@ void textDisplay(){
   if(startingEvent.stage!=-1){
     animationsDisplay(startingAni);
   }
+  // 門的文字
+  doorsDialogue();
 }
 
 void eventTextDisplay(Event event,Animation[] ani){

@@ -169,10 +169,24 @@ void playerSelect(){
   if(startGame.clicked()){
     player = new Player(currentSelect,nameString);
     initGame();
+    frame = 30;
+    
+  }
+  if(frame>0){
+    frame--;
+  }
+  if(frame!=-1){
+    fill(0,map(frame,30,0,0,255));
+    rect(0,0,width,height);
+  }
+  
+  
+  if(frame==0){
     gameState = "PLAYING";
   }
 }
 
+int frame = -1;
 
 // 背包 選單 介面更新
 void guiUpdate(){
@@ -193,11 +207,11 @@ void guiUpdate(){
 
 // 背包 選單 介面顯示
 void guiDisplay(){
-  if(menuIsOpening){
-    image(menu,0,0,60,60);
-  }else{
-    image(menuOpen,0,0,60,60);
-  }
+  //if(menuIsOpening){
+  //  image(menu,0,0,60,60);
+  //}else{
+  //  image(menuOpen,0,0,60,60);
+  //}
   
   if(bagIsOpening){
     fill(#535162,200);

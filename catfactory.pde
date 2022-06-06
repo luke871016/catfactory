@@ -1,3 +1,10 @@
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
 Player player;
 PFont font;
 String gameState = "START";
@@ -11,12 +18,13 @@ color blackMask = color(255);
 void setup(){
   size(1024,420);
   background(0);
+  
   loadGuiImg();
   loadSceneImg();
   loadPlayerImg();
   loadItemImg();
   //loadData();
-  font = createFont("GenSenRoundedTW-R",23);
+  font = createFont("GenSenRounded-R.ttf",23);
   
   blackMask = color(0,1);
 }
@@ -41,7 +49,7 @@ void draw(){
         cameraOffset();// 鏡頭捲動
         setCamera();// 設定鏡頭位置（事件開啟後使用）
         sceneLayer0();// 場景圖層0
-        sceneLayer1();// 場景圖層1 
+        sceneLayer1();// 場景圖層1
         player.display();// 玩家
         sceneLayer2();// 場景圖層2 (前景)
       popMatrix();
